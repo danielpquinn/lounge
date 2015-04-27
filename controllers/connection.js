@@ -1,43 +1,33 @@
+var CommandController = require('./command');
 var Message = require('../models/message');
 var striptags = require('striptags');
+var UserController = require('./user');
 
 module.exports = function (socket) {
   var io = this;
 
-  var parseCommand = function (input) {
-    var parts, command, args;
-    parts = input.match(/(^\/\w+)|(-[^-]+)/g);
-    if (!parts) { return; }
-    command = parts[0].trim().replace('/', '');
-    args = [];
-    for (var i = 1; i < parts.length; i += 1) {
-      var bits = parts[i].split(' ');
-      var arg = {};
-      arg[bits[0].replace('-', '')] = bits[1].trim();
-      args.push(arg);
-    }
-    return {
-      command: command,
-      args: args
-    };
-  };
-
   socket.on('message', function (data) {
     var command;
-    var messageText = striptags(data.message)
+    var messageText;
+
+    if (!data.text) { return; }
+
+    messageText = striptags(data.text);
 
     if (messageText.charAt(0) === '/') {
-      console.log(parseCommand(messageText));
+      new CommandController()
+        .runCommand(data.text)
+        .then(function (result) { socket.emit('info', result); })
+        .catch(function (result) {
+          socket.emit('warning', (result ? (result.message || result) : 'Error'));
+        });
     } else {
       var message = new Message({ text: messageText });
-      message.save(function (err) {
-        if (err) {
-          return socket.emit('error', {
-            error: err.message
-          });
-        }
-        console.log(message.toObject());
+      message.saveAsync(function () {
         io.emit('message', message.toObject());
+      })
+      .catch(function (err) {
+        socket.emit('warning', err.message);
       });
     }
   });

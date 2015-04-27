@@ -43,3 +43,11 @@ form input {
 form input:focus {
   outline: none;
 }
+
+.warning {
+  color: #ff0000;
+}
+
+.info {
+  color: #0000ff;
+}

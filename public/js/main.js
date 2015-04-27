@@ -9,8 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
     var message = $message.val()
     e.preventDefault()
     if (!message) { return; }
-    socket.emit('message', { message: $message.val() })
+    socket.emit('message', { text: $message.val() })
     $message.val('')
+  })
+
+  socket.on('info', data => {
+    $messages.append(`<li class="info"><span class="message">${data}</span></li>`);
+  })
+
+  socket.on('warning', data => {
+    $messages.append(`<li class="warning"><span class="message">${data}</span></li>`);
   })
 
   socket.on('message', data => {

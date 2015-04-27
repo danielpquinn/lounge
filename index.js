@@ -8,7 +8,10 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var Promise = require('bluebird');
 var mongoose = require('mongoose');
+
+Promise.promisifyAll(mongoose);
 
 mongoose.connect('mongodb://localhost/lounge');
 
