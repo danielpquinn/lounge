@@ -1,0 +1,10 @@
+var mongoose = require('mongoose');
+var twoWeeksMs = (14 * 7 * 24 * 60 * 60 * 1000);
+
+var schema = mongoose.Schema({
+  expires: { type: Date, default: function () { return Date.now() + twoWeeksMs; } }
+  token: { type: String, required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+});
+
+module.exports = mongoose.Model('AuthToken', schema);

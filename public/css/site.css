@@ -1,0 +1,45 @@
+body * {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: black;
+  font-family: monospace;
+  color: #00ff00;
+}
+
+.messages {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  position: absolute;
+  right: 0;
+  bottom: 30px;
+  left: 0;
+}
+
+.messages .username {
+  color: #ff00ff;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+form {
+  position: absolute;
+  margin: 0;
+  right: 0;
+  bottom: 10px;
+  left: 0;
+}
+
+form input {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  font-family: monospace;
+  color: #00ff00;
+}
+
+form input:focus {
+  outline: none;
+}

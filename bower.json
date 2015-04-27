@@ -1,0 +1,23 @@
+{
+  "name": "lounge",
+  "main": "home.js",
+  "version": "0.0.0",
+  "authors": [
+    "Dan Quinn <dan@earlybirdy.com>"
+  ],
+  "description": "Chill in the lounge",
+  "keywords": [
+    "Lounge"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3"
+  }
+}
