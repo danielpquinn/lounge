@@ -1,11 +1,15 @@
 module.exports = {
-  email: 'username@gmail.com',
+  host: 'localhost',
+  port: 3000,
+  protocol: 'http',
+  email: 'user@gmail.com',
   emailTransport: {
     service: 'Gmail',
     auth: {
-      user: 'username@gmail.com',
-      password: 'mypassword'
+      user: 'user@gmail.com',
+      pass: 'secretpassword'
     }
   },
-  siteName: 'My Site Name'
+  siteName: 'My Site',
+  mongoUrl: 'mongodb://localhost/dbname'
 };
