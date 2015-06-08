@@ -1,17 +1,29 @@
+
+// User model
+
+// Dependencies
+
 var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 
+// Schema
+
 var schema = mongoose.Schema({
-  authToken: { type: String },
-  email: { type: String, required: true },
+  created: { type: Date, default: Date.now },
+  email: { type: String, required: true, unique: true },
   emailVerified: { type: Boolean, default: false },
   password: { type: String, required: true },
   username: { type: String, required: true },
-  verifyEmailToken: { type: String }
+  oldId: { type: String }
 });
+
+// Encrypt password when it is updated
 
 schema.pre('save', function (next) {
   var self = this;
+
+  // If password is modified, generate salt
+  // and use it to hash the password
 
   if (self.isModified('password')) {
     return bcrypt.genSalt(10, function (err, salt) {
@@ -25,5 +37,7 @@ schema.pre('save', function (next) {
 
   next();
 });
+
+// Exports
 
 module.exports = mongoose.model('User', schema);

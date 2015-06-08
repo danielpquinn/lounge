@@ -5,10 +5,20 @@ html
     script(type='text/javascript',src='/socket.io/socket.io.js')
     script(type='text/javascript',src='/bower_components/jquery/dist/jquery.js')
     script(type='text/javascript',src='/dist/main.js')
+    script.
+      var TOKEN = '#{authToken}';
 
   body
+
+    // Messages
+
     ul.messages
       - each message in messages
-        li= message.text
+        li
+          span.username= message.username || 'anonymous'
+          span.message!= message.text
+
+    // User input
+
     form
       input(type="text",name="message")

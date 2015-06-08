@@ -1,3 +1,6 @@
+
+/* Basic site styles */
+
 body * {
   box-sizing: border-box;
 }
@@ -9,13 +12,10 @@ body {
 }
 
 .messages {
-  padding: 0;
   margin: 0;
+  padding: 0;
+  width: 100%;
   list-style: none;
-  position: absolute;
-  right: 0;
-  bottom: 30px;
-  left: 0;
 }
 
 .messages .username {
@@ -25,11 +25,7 @@ body {
 }
 
 form {
-  position: absolute;
-  margin: 0;
-  right: 0;
-  bottom: 10px;
-  left: 0;
+  width: 100%;
 }
 
 form input {
@@ -50,4 +46,8 @@ form input:focus {
 
 .info {
   color: #0000ff;
+}
+
+a {
+  color: #3CBBC6;
 }
