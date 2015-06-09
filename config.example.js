@@ -1,4 +1,5 @@
 module.exports = {
+  ip: '1.1.1.1',
   host: 'localhost',
   port: 3000,
   protocol: 'http',
@@ -7,9 +8,9 @@ module.exports = {
     service: 'Gmail',
     auth: {
       user: 'user@gmail.com',
-      pass: 'secretpassword'
+      pass: 'pass'
     }
   },
-  siteName: 'My Site',
-  mongoUrl: 'mongodb://localhost/dbname'
+  siteName: 'Site',
+  mongoUrl: 'mongodb://localhost/db'
 };
