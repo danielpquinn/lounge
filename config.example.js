@@ -1,5 +1,5 @@
 module.exports = {
-  ip: '1.1.1.1',
+  ip: '127.0.0.1',
   host: 'localhost',
   port: 3000,
   protocol: 'http',
