@@ -7,9 +7,10 @@ var AuthToken = require('../models/auth-token');
 var bcrypt = require('bcrypt');
 var config = require('../config.js');
 var emailClient = require('../clients/email');
-var Promise = require('bluebird');
-var User = require('../models/user');
 var Message = require('../models/message');
+var Promise = require('bluebird');
+var session = require('./session');
+var User = require('../models/user');
 var uuid = require('node-uuid');
 
 // Constructor
@@ -70,7 +71,7 @@ UserController.signUp = function (username, email, password) {
 
       return {
         command: 'signup',
-        message: 'Account created. Check your email for a verification link'
+        text: 'Account created. Check your email for a verification link'
       };
     });
 };
@@ -118,13 +119,17 @@ UserController.signIn = function (email, password) {
     })
     .then(function (token) {
 
+      // Add user to signed in users
+      
+      session.addUser(user);
+
       // Send back a successful login response. Client will store token
       // and use it to authenticate future requests
 
       return {
         command: 'signin',
         token: token[0].token,
-        message: 'signed in as ' + user.username
+        text: 'signed in as ' + user.username
       };
     });
 };
@@ -142,11 +147,15 @@ UserController.signOut = function (user) {
   return AuthToken.removeAsync({ user: user._id })
     .then(function () {
 
+      // Remove user from list of users
+
+      session.removeUser(user);
+
       // Send a signout message back to the user
 
       return {
         command: 'signout',
-        message: 'l8r h8r'
+        text: 'l8r h8r'
       }
     });
 };
@@ -267,7 +276,7 @@ UserController.resetPassword = function (email) {
 
       return {
         command: 'resetPassword',
-        message: 'Check your email for a password reset link'
+        text: 'Check your email for a password reset link'
       };
     });
 };
@@ -295,7 +304,8 @@ UserController.update = function (user, username, email, password) {
   return user.saveAsync()
     .then(function () {
       return {
-        message: 'Account updated'
+        command: 'update',
+        text: 'Account updated'
       };
     });
 };

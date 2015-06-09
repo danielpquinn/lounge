@@ -34,12 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   socket.on('command', data => {
-    console.log(data._id);
     if (data.command === 'removelastmessage') { $('#' + data._id).remove(); }
     if (data.command === 'signin') { signIn(data) }
     if (data.command === 'signout') { signOut(data) }
-    if (!data.message) { return }
-    $messages.append(`<li class="info"><span class="message">${data.message}</span></li>`);
+    if (!data.text) { return }
+    $messages.append(`<li class="info"><span class="message">${data.text}</span></li>`);
     scrollToBottom()
   })
 

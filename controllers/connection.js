@@ -6,6 +6,7 @@
 var CommandController = require('./command');
 var Message = require('../models/message');
 var AutoLinker = require('autolinker');
+var session = require('./session');
 var striptags = require('striptags');
 var UserController = require('./user');
 var winston = require('winston');
@@ -14,6 +15,25 @@ var winston = require('winston');
 
 module.exports = function (socket) {
   var io = this;
+  var currentUser;
+
+  // Remove user from logged in users on disconnect
+  
+  socket.on('disconnect', function (data) {
+
+    if (!currentUser) { return; }
+
+    // Remove user from session singleton
+
+    session.removeUser(currentUser);
+
+    // Send message to clients
+
+    io.emit('message', {
+      username: 'system',
+      text: '<span class="info">' + currentUser.username + ' has disconnected</span>'
+    });
+  });
 
   // Handle message from client
 
@@ -28,6 +48,10 @@ module.exports = function (socket) {
     UserController.authenticate(data.token)
       .then(function (user) {
         var command, message, messageText;
+
+        // Add user to session
+        
+        if (user) { currentUser = user; session.addUser(user); }
 
         // Strip tags from user input
 

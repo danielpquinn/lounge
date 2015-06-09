@@ -45,6 +45,9 @@ Help.main = function (command) {
     case 'resetpassword':
     message = renderTemplate('resetpassword');
     break;
+    case 'users':
+    message = renderTemplate('users');
+    break;
     default:
     message = renderTemplate('overview');
   }
@@ -52,7 +55,7 @@ Help.main = function (command) {
   return new Promise(function (resolve, reject) {
     resolve({
       command: 'help',
-      message: message
+      text: message
     });
   });
 };

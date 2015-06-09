@@ -7,7 +7,7 @@ var source = require('vinyl-source-stream');
 
 gulp.task('babelify', function () {
   browserify()
-    .add(require.resolve('babel/polyfill'))
+    .add(require.resolve('babelify/polyfill'))
     .add('./public/js/main.js')
     .transform(babelify)
     .bundle()

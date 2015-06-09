@@ -6,6 +6,7 @@
 var HelpController = require('./help');
 var UserController = require('./user');
 var Promise = require('bluebird');
+var session = require('./session');
 
 // Constructor
 
@@ -69,6 +70,8 @@ CommandController.runCommand = function (user, input) {
     return UserController.signOut(user);
     case 'updateaccount':
     return UserController.update(user, args.username || args.u, args.email || args.e, args.password || args.p);
+    case 'users':
+    return session.getUsers();
     default:
     throw new Error('Unrecognized command');
   }

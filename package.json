@@ -27,7 +27,7 @@
     "winston": "^1.0.0"
   },
   "devDependencies": {
-    "babelify": "^6.0.2",
+    "babelify": "^6.1.2",
     "browserify": "^9.0.8",
     "gulp": "^3.8.11",
     "vinyl-source-stream": "^1.1.0"
