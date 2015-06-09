@@ -3,6 +3,7 @@
 
 // Dependencies
 
+var config = require('../config');
 var AuthToken = require('../models/auth-token');
 var AutoLinker = require('autolinker');
 var Message = require('../models/message');
@@ -14,6 +15,12 @@ var uuid = require('node-uuid');
 
 module.exports = function (req, res, next) {
   var user;
+
+  // Add url data to locals
+  
+  res.locals.protocol = config.protocol;
+  res.locals.ip = config.ip;
+  res.locals.port = config.port;
 
   // First find the 25 most recent messages
 
@@ -33,7 +40,8 @@ module.exports = function (req, res, next) {
       res.locals.messages = messages.map(function (message) {
         return {
           username: message.user ? message.user.username : 'anonymous',
-          text: AutoLinker.link(message.text)
+          text: AutoLinker.link(message.text),
+          _id: message._id
         }
       });
     })
@@ -66,13 +74,21 @@ module.exports = function (req, res, next) {
         // Add appropriate messaging to initial page render
 
         if (req.query.verifyEmailToken) {
-          message.text = 'Email verified, signed in as ' + authToken.user.username;
+          message.text = '<span class="info">Email verified, signed in as ' + authToken.user.username + '</span>';
         }
         if (req.query.resetPasswordToken) {
-          message.text = 'Signed in as ' + authToken.user.username + '. to update your password type "/updateaccount -p yourpassword"';
+          message.text = '<span class="info">Signed in as ' + authToken.user.username + '. to update your password type "/updateaccount -p yourpassword"</span>';
         }
 
         res.locals.messages.push(message);
+      } else {
+
+        // Add welcome message
+        
+        res.locals.messages.push({
+          username: 'system',
+          text: '<span class="info">Welcome. type "/help" and hit enter if you\'re not sure what to do next</span>'
+        });
       }
 
       // Render home page

@@ -2,19 +2,20 @@ html
   head
     title Lounge
     link(type='text/css',rel='stylesheet',href='/css/site.css')
-    script(type='text/javascript',src='/socket.io/socket.io.js')
+    script(type='text/javascript',src='#{protocol}://#{ip}:#{port}/socket.io/socket.io.js')
     script(type='text/javascript',src='/bower_components/jquery/dist/jquery.js')
     script(type='text/javascript',src='/dist/main.js')
     script.
       var TOKEN = '#{authToken}';
-
+      var IP = '#{ip}';
+      var PORT = '#{port}';
   body
 
     // Messages
 
     ul.messages
       - each message in messages
-        li
+        li(id=message._id)
           span.username= message.username || 'anonymous'
           span.message!= message.text
 

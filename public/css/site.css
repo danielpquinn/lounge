@@ -6,6 +6,7 @@ body * {
 }
 
 body {
+  font-size: 14px;
   background-color: black;
   font-family: monospace;
   color: #00ff00;
@@ -29,6 +30,7 @@ form {
 }
 
 form input {
+  font-size: 14px;
   background-color: transparent;
   border: none;
   width: 100%;
@@ -45,7 +47,7 @@ form input:focus {
 }
 
 .info {
-  color: #0000ff;
+  color: #3CBBC6;
 }
 
 a {

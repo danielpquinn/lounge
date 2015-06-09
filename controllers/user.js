@@ -9,6 +9,7 @@ var config = require('../config.js');
 var emailClient = require('../clients/email');
 var Promise = require('bluebird');
 var User = require('../models/user');
+var Message = require('../models/message');
 var uuid = require('node-uuid');
 
 // Constructor
@@ -296,6 +297,43 @@ UserController.update = function (user, username, email, password) {
       return {
         message: 'Account updated'
       };
+    });
+};
+
+// Remove the most recent message
+
+UserController.removeLastMessage = function (user) {
+  var message;
+
+  // Must be signed in to update a user
+
+  if (!user) { throw new Error('You are not signed in'); }
+
+  // First find message so it's _id can be passed back to the client
+
+  return Message.find({ user: user._id })
+    .sort('-created')
+    .limit(1)
+    .findAsync()
+    .then(function (docs) {
+
+      // Throw error if nothing was found
+
+      if (!docs[0]) { throw new Error('No message to remove'); }
+
+      message = docs[0];
+
+      // Actuall remove the message
+
+      return message.removeAsync();
+    }).then(function () {
+
+      // Send id back to client so it can be removed
+
+      return {
+        command: 'removelastmessage',
+        _id: message._id
+      }
     });
 };
 

@@ -3,6 +3,7 @@
 
 // Dependencies
 
+var HelpController = require('./help');
 var UserController = require('./user');
 var Promise = require('bluebird');
 
@@ -54,6 +55,10 @@ CommandController.runCommand = function (user, input) {
   // Select command to run
 
   switch(command.command) {
+    case 'help':
+    return HelpController.main(args.command || args.c);
+    case 'removelastmessage':
+    return UserController.removeLastMessage(user);
     case 'resetpassword':
     return UserController.resetPassword(args.email || args.e);
     case 'signup':

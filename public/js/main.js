@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (TOKEN.length > 0) { localStorage.setItem('token', TOKEN) }
   var token = localStorage.getItem('token')
-  var socket = io.connect('http://localhost:3000')
+  var socket = io.connect('http://' + IP + ':' + PORT)
   var $body = $('body')
   var $form = $('form')
   var $message = $form.find('input')
@@ -34,10 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   socket.on('command', data => {
-    console.log(data);
+    console.log(data._id);
+    if (data.command === 'removelastmessage') { $('#' + data._id).remove(); }
     if (data.command === 'signin') { signIn(data) }
     if (data.command === 'signout') { signOut(data) }
+    if (!data.message) { return }
     $messages.append(`<li class="info"><span class="message">${data.message}</span></li>`);
+    scrollToBottom()
   })
 
   socket.on('warning', data => {
@@ -46,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   socket.on('message', data => {
-    $messages.append(`<li><span class="username">${data.username || 'anonymous'}</span><span class="message">${data.text}</span></li>`);
+    $messages.append(`<li id="${data._id}"><span class="username">${data.username || 'anonymous'}</span><span class="message">${data.text}</span></li>`);
     scrollToBottom()
   })
 
