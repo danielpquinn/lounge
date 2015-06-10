@@ -4,6 +4,7 @@
 // Dependencies
 
 var HelpController = require('./help');
+var EnvironmentController = require('./environment');
 var UserController = require('./user');
 var Promise = require('bluebird');
 var session = require('./session');
@@ -36,7 +37,9 @@ CommandController.parseCommand = function (input) {
 
   for (var i = 1; i < parts.length; i += 1) {
     var bits = parts[i].split(' ');
-    args[bits[0].replace('-', '')] = bits[1].trim();
+    var key = bits[0].replace('-', '');
+    var value = bits.splice(1).join(' ').trim();
+    args[key] = value;
   }
 
   // Return command object
@@ -57,7 +60,19 @@ CommandController.runCommand = function (user, input) {
 
   switch(command.command) {
     case 'help':
-    return HelpController.main(args.command || args.c);
+    return HelpController.getHelp(args.command || args.c);
+    case 'createenvironment':
+    return EnvironmentController.createEnvironment(user, args.name || args.n, args.description || args.d);
+    case 'createenvironment':
+    return EnvironmentController.createEnvironment(user, args.name || args.n, args.description || args.d);
+    case 'connectenvironments':
+    return EnvironmentController.connectEnvironments(user, args.name1, args.name2);
+    case 'moveto':
+    return UserController.moveTo(user, args.name || args.n);
+    case 'look':
+    return UserController.look(user);
+    case 'removeenvironment':
+    return EnvironmentController.removeEnvironment(user, args.name || args.n);
     case 'removelastmessage':
     return UserController.removeLastMessage(user);
     case 'resetpassword':

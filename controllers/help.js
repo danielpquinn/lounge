@@ -10,9 +10,9 @@ var jade = require('jade');
 
 function Help() {}
 
-// Display main help text
+// Get help text
 
-Help.main = function (command) {
+Help.getHelp = function (command) {
   var message;
 
   // Find template in views/help and render
@@ -26,6 +26,9 @@ Help.main = function (command) {
   switch (command) {
     case 'help':
     message = renderTemplate('help');
+    break;
+    case 'look':
+    message = renderTemplate('look');
     break;
     case 'resetpassword':
     message = renderTemplate('resetpassword');
@@ -51,6 +54,8 @@ Help.main = function (command) {
     default:
     message = renderTemplate('overview');
   }
+
+  console.log(message);
 
   return new Promise(function (resolve, reject) {
     resolve({

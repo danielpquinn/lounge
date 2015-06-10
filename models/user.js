@@ -6,6 +6,10 @@
 var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 
+// Definitions
+
+var roleOptions = [ 'user', 'admin' ];
+
 // Schema
 
 var schema = mongoose.Schema({
@@ -13,6 +17,7 @@ var schema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   emailVerified: { type: Boolean, default: false },
   password: { type: String, required: true },
+  role: { type: String, enum: roleOptions, default: roleOptions[0] },
   username: { type: String, required: true },
   oldId: { type: String }
 });

@@ -11,6 +11,7 @@ var Message = require('../models/message');
 var Promise = require('bluebird');
 var session = require('./session');
 var User = require('../models/user');
+var Environment = require('../models/environment');
 var uuid = require('node-uuid');
 
 // Constructor
@@ -87,6 +88,8 @@ UserController.signIn = function (email, password) {
     .execAsync()
     .then(function (doc) {
       var compare = Promise.promisify(bcrypt.compare);
+
+      console.log(doc);
 
       // No user with this email address was found, thow an error
 
@@ -343,6 +346,112 @@ UserController.removeLastMessage = function (user) {
       return {
         command: 'removelastmessage',
         _id: message._id
+      }
+    });
+};
+
+// Enter a environment
+
+UserController.moveTo = function (user, name) {
+  var currentEnvironment, newEnvironment;
+
+  // Must be signed in to enter a environment
+
+  if (!user) { throw new Error('You are not signed in'); }
+
+  // Make sure necessary arguments are supplied
+
+  if (!name) { throw new Error('Must supply a name'); }
+
+  // Find user's current environment
+
+  return Environment.findOne({ occupants: user._id })
+    .populate('adjacentEnvironments')
+    .execAsync()
+    .then(function (doc) {
+      var adjacent = false;
+
+      // Throw error if user isn't in any environment
+      
+      if (!doc) { throw new Error(user.username + ' is not currently in a environment! Something is wrong'); }
+
+      // Throw error if user is already in this environment
+      
+      if (doc.name === name) { throw new Error(user.username + ' is already in ' + name); }
+
+      currentEnvironment = doc;
+
+      // Check to see if desired environment is adjacent to current environment
+      // Throw an error if it is not
+      
+      currentEnvironment.adjacentEnvironments.forEach(function (environment) {
+        if (environment.name === name) { adjacent = true; }
+      });
+
+      if (!adjacent) { throw new Error(name + ' is not connected to ' + currentEnvironment.name); }
+
+      // Find desired environment to move into
+      
+      return Environment.findOneAsync({ name: name });
+    }).then(function (doc) {
+
+      // Throw error if there's no matching environment
+      
+      if (!doc) { throw new Error('Couldn\'t find a environment named ' + name); }
+
+      newEnvironment = doc;
+
+      // Remove user from current environment
+      
+      currentEnvironment.occupants = currentEnvironment.occupants.filter(function (occupant) {
+        return !user._id.equals(occupant);
+      });
+
+      // Add user to new environment
+      
+      newEnvironment.occupants.push(user._id);
+
+      // Save environments
+      
+      return Promise.all([ currentEnvironment.saveAsync(), newEnvironment.saveAsync() ]);
+    }).then(function () {
+
+      // Send a report back
+      
+      return {
+        command: 'moveTo',
+        text: 'Moved from ' + currentEnvironment.name + ' into ' + newEnvironment.name
+      };
+    });
+
+};
+
+// Look around
+
+UserController.look = function (user) {
+
+  // Must be signed in to look around
+
+  if (!user) { throw new Error('You are not signed in'); }
+
+  // Find user's current environment
+
+  return Environment.findOne({ occupants: user._id })
+    .populate('adjacentEnvironments')
+    .execAsync()
+    .then(function (doc) {
+
+      // Throw error if user isn't in any environment
+      
+      if (!doc) { throw new Error(user.username + ' is not currently in a environment! Something is wrong'); }
+
+      // Return a description of the surroundings
+      
+      return {
+        command: 'look',
+        text: 'Current location: ' + doc.name + ' | ' + doc.description + ' | You can see these places: ' + doc.adjacentEnvironments.map(function (environment) {
+          return environment.name;
+        }).join(', ')
       }
     });
 };
