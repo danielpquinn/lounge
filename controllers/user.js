@@ -431,8 +431,8 @@ UserController.move = function (user, name) {
       // Send a report back
       
       return {
-        command: 'moveTo',
-        text: 'Moved from ' + currentEnvironment.name + ' into ' + newEnvironment.name
+        command: 'move',
+        text: user.username + ' moved from ' + currentEnvironment.name + ' into ' + newEnvironment.name
       };
     });
 

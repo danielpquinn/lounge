@@ -69,7 +69,13 @@ module.exports = function (socket) {
 
               // Send result back to client
 
-              socket.emit('command', result);
+              // If this was a me or a move command, tell everybody
+
+              if ([ 'me', 'move', 'pickup', 'drop' ].indexOf(result.command) >= 0) {
+                io.emit('command', result);
+              } else {
+                socket.emit('command', result);
+              }
             });
         }
 
