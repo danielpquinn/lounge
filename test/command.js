@@ -31,5 +31,14 @@ describe('Command', function () {
         }
       }, CommandController.parseCommand('/foo -bar baz'));
     });
+
+    it('should parse a command with one argument but no argument name', function () {
+      assert.deepEqual({
+        command: 'foo',
+        args: {
+          default: 'bar'
+        }
+      }, CommandController.parseCommand('/foo bar'));
+    })
   });
 });

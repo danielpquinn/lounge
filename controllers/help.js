@@ -30,8 +30,8 @@ Help.getHelp = function (command) {
     case 'look':
     message = renderTemplate('look');
     break;
-    case 'moveto':
-    message = renderTemplate('moveto');
+    case 'move':
+    message = renderTemplate('move');
     break;
     case 'resetpassword':
     message = renderTemplate('resetpassword');

@@ -1,0 +1,22 @@
+p ---------------------------------
+
+p
+  strong= name
+
+p= description
+
+p Looking out, you can see:
+
+ul
+  each environment in adjacentEnvironments
+    li= environment.name
+
+if occupants.length
+
+  p Other people:
+
+  ul
+    each occupant in occupants
+      li= occupant.username
+
+br

@@ -16,30 +16,43 @@ function CommandController() {}
 // Parse a command from user input
 
 CommandController.parseCommand = function (input) {
-  var parts, command, args;
+  var defaultCommand, parts, command, args = {};
 
-  // Break parts of command out into command and param/value
-  // pairs. "/command -param param1"
-
-  parts = input.match(/(^\/\w+)|(-[^-]+)/g);
+  // Grab command
+  
+  command = input.match(/^\/(\w+)/)[1];
 
   // Send back an undefined command if command could not be parsed
 
-  if (!parts) { throw new Error('Unrecognized command'); }
+  if (!command) { throw new Error('Unrecognized command'); }
 
-  // First match will be the command to run
+  // If theres no dash anywhere, use first thing after command as default argument
 
-  command = parts[0].trim().replace('/', '');
+  if (input.indexOf('-') === -1) {
 
-  args = {};
+    // Grab everything after the first space
+    
+    defaultCommand = input.match(/\s(.*)$/);
 
-  // Add args to object
+    if (defaultCommand) {
+      args = { default: defaultCommand[1].trim() };
+    }
 
-  for (var i = 1; i < parts.length; i += 1) {
-    var bits = parts[i].split(' ');
-    var key = bits[0].replace('-', '');
-    var value = bits.splice(1).join(' ').trim();
-    args[key] = value;
+  } else {
+
+    // Break parts of command out into param/value
+    // pairs. "/command -param param1"
+
+    parts = input.match(/(-[^-]+)/g);
+
+    // Add args to object
+
+    for (var i = 0; i < parts.length; i += 1) {
+      var bits = parts[i].split(' ');
+      var key = bits[0].replace('-', '');
+      var value = bits.splice(1).join(' ').trim();
+      args[key] = value;
+    }
   }
 
   // Return command object
@@ -60,23 +73,21 @@ CommandController.runCommand = function (user, input) {
 
   switch(command.command) {
     case 'help':
-    return HelpController.getHelp(args.command || args.c);
-    case 'createenvironment':
-    return EnvironmentController.createEnvironment(user, args.name || args.n, args.description || args.d);
+    return HelpController.getHelp(args.command || args.c || args.default);
     case 'createenvironment':
     return EnvironmentController.createEnvironment(user, args.name || args.n, args.description || args.d);
     case 'connectenvironments':
     return EnvironmentController.connectEnvironments(user, args.name1, args.name2);
-    case 'moveto':
-    return UserController.moveTo(user, args.name || args.n);
+    case 'move':
+    return UserController.move(user, args.name || args.n || args.default);
     case 'look':
     return UserController.look(user);
     case 'removeenvironment':
-    return EnvironmentController.removeEnvironment(user, args.name || args.n);
+    return EnvironmentController.removeEnvironment(user, args.name || args.n || args.default);
     case 'removelastmessage':
     return UserController.removeLastMessage(user);
     case 'resetpassword':
-    return UserController.resetPassword(args.email || args.e);
+    return UserController.resetPassword(args.email || args.e || args.default);
     case 'signup':
     return UserController.signUp(args.username || args.u, args.email || args.e, args.password || args.p);
     case 'signin':

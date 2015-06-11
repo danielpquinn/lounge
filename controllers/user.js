@@ -7,6 +7,7 @@ var AuthToken = require('../models/auth-token');
 var bcrypt = require('bcrypt');
 var config = require('../config.js');
 var emailClient = require('../clients/email');
+var jade = require('jade');
 var Message = require('../models/message');
 var Promise = require('bluebird');
 var session = require('./session');
@@ -352,7 +353,7 @@ UserController.removeLastMessage = function (user) {
 
 // Enter a environment
 
-UserController.moveTo = function (user, name) {
+UserController.move = function (user, name) {
   var currentEnvironment, newEnvironment;
 
   // Must be signed in to enter a environment
@@ -437,22 +438,24 @@ UserController.look = function (user) {
   // Find user's current environment
 
   return Environment.findOne({ occupants: user._id })
-    .populate('adjacentEnvironments')
+    .populate('adjacentEnvironments occupants')
     .execAsync()
     .then(function (doc) {
 
       // Throw error if user isn't in any environment
-      
+
       if (!doc) { throw new Error(user.username + ' is not currently in a environment! Something is wrong'); }
 
-      // Return a description of the surroundings
+      // List other occupants
+      
+      doc.occupants = doc.occupants.filter(function (occupant) {
+        return !occupant._id.equals(user._id);
+      });
       
       return {
         command: 'look',
-        text: 'Current location: ' + doc.name + ' | ' + doc.description + ' | You can see these places: ' + doc.adjacentEnvironments.map(function (environment) {
-          return environment.name;
-        }).join(', ')
-      }
+        text: jade.renderFile(__dirname + '/../views/look.jade', doc)
+      };
     });
 };
 
