@@ -13,6 +13,7 @@ var schema = mongoose.Schema({
   name: { type: String, required: true, unique: true },
   description: { type: String, required: true },
   items: [{ type: ObjectId, ref: 'Item' }],
+  requiredItems: [{ type: ObjectId, ref: 'Item' }],
   adjacentEnvironments: [{ type: ObjectId, ref: 'Environment' }],
   occupants: [{ type: ObjectId, ref: 'User' }]
 });

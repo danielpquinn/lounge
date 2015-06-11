@@ -7,7 +7,9 @@ if items.length
 
   ul
     each item in items
-      li= item.name
+      li
+        strong= item.name
+        span : #{item.description}
 
 else
 

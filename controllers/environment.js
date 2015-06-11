@@ -131,7 +131,7 @@ EnvironmentController.removeEnvironment = function (user, name) {
 
 // Add an item to this environment
 
-EnvironmentController.addItem = function (user, environmentName, itemName) {
+EnvironmentController.addItem = function (user, environmentName, itemName, required) {
   var environment, item;
 
   // Must be admin to add an item to an environment
@@ -160,7 +160,7 @@ EnvironmentController.addItem = function (user, environmentName, itemName) {
 
       // Add item to environment
 
-      environment.items.push(item);
+      environment[required ? 'requiredItems' : 'items'].push(item);
 
       return environment.saveAsync();
     }).then(function () {
@@ -172,6 +172,12 @@ EnvironmentController.addItem = function (user, environmentName, itemName) {
         text: 'Added ' + itemName + ' to ' + environmentName
       };
     });
+};
+
+// Add a required item to this environment
+
+EnvironmentController.addRequiredItem = function (user, environmentName, itemName) {
+  return EnvironmentController.addItem(user, environmentName, itemName, true);
 };
 
 // Exports

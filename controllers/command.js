@@ -75,6 +75,8 @@ CommandController.runCommand = function (user, input) {
   switch(command.command) {
     case 'help':
     return HelpController.getHelp(args.command || args.c || args.default);
+    case 'addrequirement':
+    return EnvironmentController.addRequiredItem(user, args.environment, args.item);
     case 'createitem':
     return ItemController.createItem(user, args.name || args.n, args.description || args.d);
     case 'createenvironment':

@@ -393,14 +393,25 @@ UserController.move = function (user, name) {
 
       // Find desired environment to move into
       
-      return Environment.findOneAsync({ name: name });
+      return Environment.findOne({ name: name }).populate('requiredItems').execAsync();
     }).then(function (doc) {
+      var canEnter = true;
 
       // Throw error if there's no matching environment
       
       if (!doc) { throw new Error('Couldn\'t find a environment named ' + name); }
 
       newEnvironment = doc;
+
+      // Throw error if user doesn't have all of the required items necessary to enter
+      
+      newEnvironment.requiredItems.forEach(function (item) {
+        if (user.items.indexOf(item._id) === -1) { canEnter = false; }
+      });
+
+      if (!canEnter) {
+        throw new Error('Cannot enter ' + doc.name + ' without these items: ' + newEnvironment.requiredItems.map(function (item) { return item.name; }).join(', '));
+      }
 
       // Remove user from current environment
       
