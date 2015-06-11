@@ -438,7 +438,7 @@ UserController.look = function (user) {
   // Find user's current environment
 
   return Environment.findOne({ occupants: user._id })
-    .populate('adjacentEnvironments occupants')
+    .populate('adjacentEnvironments occupants items')
     .execAsync()
     .then(function (doc) {
 
@@ -452,9 +452,140 @@ UserController.look = function (user) {
         return !occupant._id.equals(user._id);
       });
       
+      // List items that haven't been collected yet
+      
+      doc.items = doc.items.filter(function (item) {
+        return user.items.indexOf(item._id) === -1;
+      });
+
       return {
         command: 'look',
         text: jade.renderFile(__dirname + '/../views/look.jade', doc)
+      };
+    });
+};
+
+// Pick up an item
+
+UserController.pickup = function (user, name) {
+  var currentEnvironment;
+
+  // Must be signed in to pick up an item
+
+  if (!user) { throw new Error('You are not signed in'); }
+
+  // Make sure necessary arguments are supplied
+
+  if (!name) { throw new Error('Must supply a name'); }
+
+  // Find user's current environment
+
+  return Environment.findOne({ occupants: user._id })
+    .populate('items')
+    .execAsync()
+    .then(function (doc) {
+      var desiredItem;
+
+      // Throw error if user isn't in any environment
+
+      if (!doc) { throw new Error(user.username + ' is not currently in a environment! Something is wrong'); }
+
+      // Try to pull item out of items in environment
+
+      desiredItem = doc.items.filter(function (item) {
+        return item.name === name;
+      });
+
+      // If item does not exist in environment, throw an error
+      
+      if (desiredItem.length === 0) { throw new Error(name + ' does not exist in ' + doc.name); }
+
+      // Add items to user's collection
+
+      user.items.push(desiredItem[0]._id);
+
+      // Save user
+      
+      return user.saveAsync();
+    })
+    .then(function () {
+
+      // Send a message explaining that item was added
+      
+      return {
+        command: 'pickup',
+        text: user.username + ' picked up ' + name
+      };
+    });
+};
+
+// Drop an item
+
+UserController.drop = function (user, name) {
+  var desiredItem;
+
+  // Must be signed in to drop an item
+
+  if (!user) { throw new Error('You are not signed in'); }
+
+  // Make sure necessary arguments are supplied
+
+  if (!name) { throw new Error('Must supply a name'); }
+
+  // Populate items
+  
+  return user.populateAsync('items')
+    .then(function () {
+
+      // See if desired item is present
+      
+      desiredItem = user.items.filter(function (item) {
+        return item.name === name;
+      });
+
+      // If user doesn't have this item, throw an error
+      
+      if (desiredItem.length === 0) { throw new Error(user.username + ' does not have ' + name); }
+
+      // Remove from users items
+
+      user.items = user.items.filter(function (item) {
+        return item.name !== name;
+      });
+
+      // Save user
+      
+      return user.saveAsync();
+    })
+    .then(function () {
+
+      // Send a summary back
+      
+      return {
+        command: 'drop',
+        text: user.username + ' dropped ' + name
+      };
+    });
+};
+
+// Show inventory
+
+UserController.inventory = function (user) {
+
+  // Must be signed in to show inventory
+
+  if (!user) { throw new Error('You are not signed in'); }
+
+  // Populate items
+  
+  return user.populateAsync('items')
+    .then(function () {
+
+      // Render inventory template
+
+      return {
+        command: 'inventory',
+        text: jade.renderFile(__dirname + '/../views/inventory.jade', user)
       };
     });
 };

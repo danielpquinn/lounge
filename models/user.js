@@ -5,6 +5,7 @@
 
 var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Definitions
 
@@ -16,6 +17,7 @@ var schema = mongoose.Schema({
   created: { type: Date, default: Date.now },
   email: { type: String, required: true, unique: true },
   emailVerified: { type: Boolean, default: false },
+  items: [{ type: ObjectId, ref: 'Item' }],
   password: { type: String, required: true },
   role: { type: String, enum: roleOptions, default: roleOptions[0] },
   username: { type: String, required: true },

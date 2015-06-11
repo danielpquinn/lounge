@@ -1,0 +1,16 @@
+p ---------------------------------
+
+p
+  strong Inventory
+
+if items.length
+
+  ul
+    each item in items
+      li= item.name
+
+else
+
+  p Your inventory is empty
+
+br

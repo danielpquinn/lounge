@@ -4,6 +4,7 @@
 // Dependencies
 
 var Environment = require('../models/environment');
+var Item = require('../models/item');
 var Promise = require('bluebird');
 
 // Constructor
@@ -18,6 +19,10 @@ EnvironmentController.createEnvironment = function (user, name, description) {
   // Must be admin to create a environment
   
   if (!user || user.role !== 'admin') { throw new Error('Access denied'); }
+
+  // Make sure all arguments are present
+  
+  if (!name || !description) { throw new Error('Must supply name and description arguments'); }
 
   environment = new Environment({
     name: name,
@@ -120,6 +125,51 @@ EnvironmentController.removeEnvironment = function (user, name) {
       return {
         command: 'removeEnvironment',
         text: 'Removed environment ' + name
+      };
+    });
+};
+
+// Add an item to this environment
+
+EnvironmentController.addItem = function (user, environmentName, itemName) {
+  var environment, item;
+
+  // Must be admin to add an item to an environment
+  
+  if (!user || user.role !== 'admin') { throw new Error('Access denied'); }
+
+  // Look up environment
+
+  return Environment.findOneAsync({ name: environmentName })
+    .then(function (doc) {
+
+      // Throw error if no environment found
+
+      if (!doc) { throw new Error('Could not find environment with name ' + environmentName); }
+
+      environment = doc;
+
+      return Item.findOneAsync({ name: itemName });
+    }).then(function (doc) {
+
+      // Throw error if no environment found
+
+      if (!doc) { throw new Error('Could not find item with name ' + itemName); }
+
+      item = doc;
+
+      // Add item to environment
+
+      environment.items.push(item);
+
+      return environment.saveAsync();
+    }).then(function () {
+
+      // Send an item added message
+      
+      return {
+        command: 'addItem',
+        text: 'Added ' + itemName + ' to ' + environmentName
       };
     });
 };

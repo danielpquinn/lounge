@@ -24,41 +24,20 @@ Help.getHelp = function (command) {
   // If getting help with a specific command, look it up here
   
   switch (command) {
-    case 'help':
-    message = renderTemplate('help');
-    break;
-    case 'look':
-    message = renderTemplate('look');
-    break;
-    case 'move':
-    message = renderTemplate('move');
-    break;
-    case 'resetpassword':
-    message = renderTemplate('resetpassword');
-    break;
-    case 'signin':
-    message = renderTemplate('signin');
-    break;
-    case 'signout':
-    message = renderTemplate('signout');
-    break;
-    case 'signup':
-    message = renderTemplate('signup');
-    break;
-    case 'updateaccount':
-    message = renderTemplate('updateaccount');
-    break;
-    case 'resetpassword':
-    message = renderTemplate('resetpassword');
-    break;
-    case 'users':
-    message = renderTemplate('users');
-    break;
-    default:
-    message = renderTemplate('overview');
+    case 'drop': message = renderTemplate('drop'); break;
+    case 'help': message = renderTemplate('help'); break;
+    case 'look': message = renderTemplate('look'); break;
+    case 'move': message = renderTemplate('move'); break;
+    case 'pickup': message = renderTemplate('pickup'); break;
+    case 'resetpassword': message = renderTemplate('resetpassword'); break;
+    case 'signin': message = renderTemplate('signin'); break;
+    case 'signout': message = renderTemplate('signout'); break;
+    case 'signup': message = renderTemplate('signup'); break;
+    case 'updateaccount': message = renderTemplate('updateaccount'); break;
+    case 'resetpassword': message = renderTemplate('resetpassword'); break;
+    case 'users': message = renderTemplate('users'); break;
+    default: message = renderTemplate('overview');
   }
-
-  console.log(message);
 
   return new Promise(function (resolve, reject) {
     resolve({
