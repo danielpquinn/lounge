@@ -601,6 +601,26 @@ UserController.inventory = function (user) {
     });
 };
 
+// Return something like * username * does something
+
+UserController.me = function (user, message) {
+
+  // Must be signed in to do /me
+
+  if (!user) { throw new Error('You are not signed in'); }
+
+  // Make sure necessary arguments are supplied
+
+  if (!message) { throw new Error('Must supply a message'); }
+
+  return new Promise(function (resolve, reject) {
+    resolve({
+      command: 'me',
+      text: '<strong>✭ ' + user.username + ' ✭</strong> ' + message
+    });
+  });
+};
+
 // Exports
 
 module.exports = UserController;

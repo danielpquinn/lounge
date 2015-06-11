@@ -73,46 +73,27 @@ CommandController.runCommand = function (user, input) {
   // Select command to run
 
   switch(command.command) {
-    case 'help':
-    return HelpController.getHelp(args.command || args.c || args.default);
-    case 'addrequirement':
-    return EnvironmentController.addRequiredItem(user, args.environment, args.item);
-    case 'createitem':
-    return ItemController.createItem(user, args.name || args.n, args.description || args.d);
-    case 'createenvironment':
-    return EnvironmentController.createEnvironment(user, args.name || args.n, args.description || args.d);
-    case 'connectenvironments':
-    return EnvironmentController.connectEnvironments(user, args.name1, args.name2);
-    case 'drop':
-    return UserController.drop(user, args.name || args.n || args.default);
-    case 'inventory':
-    return UserController.inventory(user);
-    case 'look':
-    return UserController.look(user);
-    case 'move':
-    return UserController.move(user, args.name || args.n || args.default);
-    case 'pickup':
-    return UserController.pickup(user, args.name || args.n || args.default);
-    case 'placeitem':
-    return EnvironmentController.addItem(user, args.environment, args.item);
-    case 'removeitem':
-    return ItemController.removeItem(user, args.name || args.n || args.default);
-    case 'removeenvironment':
-    return EnvironmentController.removeEnvironment(user, args.name || args.n || args.default);
-    case 'removelastmessage':
-    return UserController.removeLastMessage(user);
-    case 'resetpassword':
-    return UserController.resetPassword(args.email || args.e || args.default);
-    case 'signup':
-    return UserController.signUp(args.username || args.u, args.email || args.e, args.password || args.p);
-    case 'signin':
-    return UserController.signIn(args.email || args.e, args.password || args.p);
-    case 'signout':
-    return UserController.signOut(user);
-    case 'updateaccount':
-    return UserController.update(user, args.username || args.u, args.email || args.e, args.password || args.p);
-    case 'users':
-    return session.getUsers();
+    case 'help': return HelpController.getHelp(args.command || args.c || args.default);
+    case 'addrequirement': return EnvironmentController.addRequiredItem(user, args.environment, args.item);
+    case 'createitem': return ItemController.createItem(user, args.name || args.n, args.description || args.d);
+    case 'createenvironment': return EnvironmentController.createEnvironment(user, args.name || args.n, args.description || args.d);
+    case 'connectenvironments': return EnvironmentController.connectEnvironments(user, args.name1, args.name2);
+    case 'drop': return UserController.drop(user, args.name || args.n || args.default);
+    case 'inventory': return UserController.inventory(user);
+    case 'look': return UserController.look(user);
+    case 'me': return UserController.me(user, args.message || args.m || args.default);
+    case 'move': return UserController.move(user, args.name || args.n || args.default);
+    case 'pickup': return UserController.pickup(user, args.name || args.n || args.default);
+    case 'placeitem': return EnvironmentController.addItem(user, args.environment, args.item);
+    case 'removeitem': return ItemController.removeItem(user, args.name || args.n || args.default);
+    case 'removeenvironment': return EnvironmentController.removeEnvironment(user, args.name || args.n || args.default);
+    case 'removelastmessage': return UserController.removeLastMessage(user);
+    case 'resetpassword': return UserController.resetPassword(args.email || args.e || args.default);
+    case 'signup': return UserController.signUp(args.username || args.u, args.email || args.e, args.password || args.p);
+    case 'signin': return UserController.signIn(args.email || args.e, args.password || args.p);
+    case 'signout': return UserController.signOut(user);
+    case 'updateaccount': return UserController.update(user, args.username || args.u, args.email || args.e, args.password || args.p);
+    case 'users': return session.getUsers();
     default:
     throw new Error('Unrecognized command');
   }

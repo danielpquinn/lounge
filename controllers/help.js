@@ -27,6 +27,7 @@ Help.getHelp = function (command) {
     case 'drop': message = renderTemplate('drop'); break;
     case 'help': message = renderTemplate('help'); break;
     case 'look': message = renderTemplate('look'); break;
+    case 'me': message = renderTemplate('me'); break;
     case 'move': message = renderTemplate('move'); break;
     case 'pickup': message = renderTemplate('pickup'); break;
     case 'resetpassword': message = renderTemplate('resetpassword'); break;
