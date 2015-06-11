@@ -26,6 +26,7 @@ Help.getHelp = function (command) {
   switch (command) {
     case 'drop': message = renderTemplate('drop'); break;
     case 'help': message = renderTemplate('help'); break;
+    case 'inventory': message = renderTemplate('inventory'); break;
     case 'look': message = renderTemplate('look'); break;
     case 'me': message = renderTemplate('me'); break;
     case 'move': message = renderTemplate('move'); break;
