@@ -71,7 +71,7 @@ module.exports = function (socket) {
 
               // If this was a me or a move command, tell everybody
 
-              if ([ 'me', 'move', 'pickup', 'drop' ].indexOf(result.command) >= 0) {
+              if ([ 'me', 'move', 'pickup', 'drop', 'removelastmessage' ].indexOf(result.command) >= 0) {
                 io.emit('command', result);
               } else {
                 socket.emit('command', result);

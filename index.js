@@ -12,7 +12,7 @@ var io = require('socket.io')(server);
 var Promise = require('bluebird');
 var mongoose = require('mongoose');
 
-Promise.promisifyAll(mongoose)
+Promise.promisifyAll(mongoose);
 
 mongoose.connect(config.mongoUrl);
 

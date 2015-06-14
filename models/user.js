@@ -20,14 +20,19 @@ var schema = mongoose.Schema({
   items: [{ type: ObjectId, ref: 'Item' }],
   password: { type: String, required: true },
   role: { type: String, enum: roleOptions, default: roleOptions[0] },
-  username: { type: String, required: true },
-  oldId: { type: String }
+  username: { type: String, requirevd: true }
 });
 
 // Encrypt password when it is updated
 
 schema.pre('save', function (next) {
   var self = this;
+
+  // Make sure email is lowercase
+  
+  if (self.isModified('email')) {
+    self.set('email', self.email.toLowerCase());
+  }
 
   // If password is modified, generate salt
   // and use it to hash the password
@@ -43,6 +48,35 @@ schema.pre('save', function (next) {
   }
 
   next();
+});
+
+// Add to environment upon creation
+
+schema.pre('save', function (next) {
+  var self = this;
+
+  // Skip if not new
+  
+  if (!self.isNew) { return next(); }
+
+  // Find environment
+  
+  mongoose.model('Environment').findOneAsync()
+    .then(function (environment) {
+
+      // Throw error if no environment exists
+      
+      if (!environment) { return next(new Error('Could not add user to environment')); }
+
+      // Add user to occupants and save
+      
+      environment.occupants.push(self);
+
+      return environment.saveAsync();
+    })
+    .then(function () { return next(); })
+    .catch(next)
+
 });
 
 // Exports
