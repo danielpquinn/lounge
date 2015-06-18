@@ -18,6 +18,7 @@ module.exports = function (req, res, next) {
 
   // Add url data to locals
   
+  res.locals.title = config.siteName;
   res.locals.protocol = config.protocol;
   res.locals.ip = config.ip;
   res.locals.port = config.port;
