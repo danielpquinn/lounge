@@ -60,22 +60,21 @@ mongoose.connect(config.mongoUrl);
 
 // Environments
 
-addEnvironment('parking lot', 'A mostly empty parking lot.');
-addEnvironment('sidewalk', 'A pretty normal sidewalk. Looking up you can see a tall, somewhat ominous looking building. A logo above the entrance reads "GloboCorp"');
-addEnvironment('lawn', 'What you first thought was a well maintained lawn turns out to be astroturf.');
-addEnvironment('lobby', 'A cool draft floats through the lobby. The floors are sparkling clean.');
-addItem('keycard', 'A GloboCorp keycard. I wonder what happened to the employee who lost it.');
+addEnvironment('desk', 'Your home office space. Actually a table from Ikea in the corner of a small house you rent.');
+addItem('arduino', 'An Arduino Yún you bought from Radio Shack during their going out of business sale.');
+addItem('laptop', 'A 13in retina Macbook Pro.');
+addItem('google cardboard', 'A DodoCase Cardboard VR headset.');
+addItem('sunglasses', 'A cheap pair of sunglasses with little gold triangles next to the lenses.');
 
 // Save environments
 
 saveModels(environments)
   .then(function () { return saveModels(items); })
   .then(function () { return user.saveAsync(); })
-  .then(function () { return EnvironmentController.addItem(user, 'lawn', 'keycard'); })
-  .then(function () { return EnvironmentController.addRequiredItem(user, 'lobby', 'keycard'); })
-  .then(function () { return EnvironmentController.connectEnvironments(user, 'parking lot', 'sidewalk'); })
-  .then(function () { return EnvironmentController.connectEnvironments(user, 'sidewalk', 'lawn'); })
-  .then(function () { return EnvironmentController.connectEnvironments(user, 'sidewalk', 'lobby'); })
+  .then(function () { return EnvironmentController.addItem(user, 'desk', 'arduino'); })
+  .then(function () { return EnvironmentController.addItem(user, 'desk', 'laptop'); })
+  .then(function () { return EnvironmentController.addItem(user, 'desk', 'google cardboard'); })
+  .then(function () { return EnvironmentController.addItem(user, 'desk', 'sunglasses'); })
   .then(function () {
     console.log('All Done');
     process.exit();

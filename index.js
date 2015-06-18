@@ -1,9 +1,3 @@
-//  __    __  _  _ __ _  ___ ____ 
-// (  )  /  \/ )( (  ( \/ __|  __)
-// / (_/(  O ) \/ (    ( (_ \) _) 
-// \____/\__/\____|_)__)\___(____)
-//
-
 var config = require('./config');
 var express = require('express');
 var app = express();
