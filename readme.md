@@ -29,7 +29,7 @@ Point your browser to localhost:3000. The bootstrap script will have created an 
 
     /signin -email admin@lounge.com -password admin
 
-New users can sign up using the /signup command and supplying an email address, username and password. Nodemailer is used to send an email verification link to the supplied email address.
+New users can sign up by using the /signup command and supplying an email address, username and password. Nodemailer is used to send an email verification link to the supplied email address.
 
 ### Admin commands
 
