@@ -4,7 +4,7 @@ Command line style chat application and MUD. Built on MongoDB and Socket.io.
 
 ![Screenshot](https://rawgit.com/danielpquinn/lounge/master/lounge.png "Lounge")
 
-### Install & Build
+### Install & build
 
     cd lounge
     npm install
