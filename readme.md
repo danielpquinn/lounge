@@ -17,15 +17,15 @@ Command line style chat application and multi-user dungeon. Built on MongoDB and
 
     cp config.example.js config.js
 
-Edit `config.js` to change site title, banner and email client configuration
+Edit `config.js` to change site title, banner and email client configuration.
 
 ### Bootstrap
 
-Bootstrap an environment with a few example rooms
+Bootstrap an environment with a few example rooms.
 
     node tools/bootstrap
 
-Point your browser to localhost:3000. The bootstrap script will have created an admin user with an email address __admin@lounge.com__ and a password __admin__. To log in as the admin user enter the following command into the prompt
+Point your browser to localhost:3000. The bootstrap script will have created an admin user with an email address __admin@lounge.com__ and a password __admin__. To log in as the admin user enter the following command into the prompt.
 
     /signin -email admin@lounge.com -password admin
 
