@@ -12,5 +12,6 @@ module.exports = {
     }
   },
   siteName: 'Site',
-  mongoUrl: 'mongodb://localhost/db'
+  mongoUrl: 'mongodb://localhost/db',
+  siteBanner: 'Your Banner Here'
 };

@@ -22,6 +22,7 @@ module.exports = function (req, res, next) {
   res.locals.protocol = config.protocol;
   res.locals.ip = config.ip;
   res.locals.port = config.port;
+  res.locals.siteBanner = config.siteBanner;
 
   // First find the 25 most recent messages
 

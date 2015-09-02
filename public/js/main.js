@@ -135,14 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Print out a banner
 
-  $messages.prepend('<li><pre>' +
-    '___________                     ___________   .__\n' +
-    '\\_   _____/___  __ _________   /   _____/  | _|__| ____\n' +
-    ' |    __)/  _ \\|  |  \\_  __ \\  \\_____  \\|  |/ /  |/    \\\n' +
-    ' |     \\(  <_> )  |  /|  | \\/  /        \\    <|  |   |  \\\n' +
-    ' \\___  / \\____/|____/ |__|    /_______  /__|_ \\__|___|  /\n' +
-    '     \\/                               \\/     \\/       \\/\n' +
-    '</pre></li>')
+  $messages.prepend('<li><pre>' + BANNER + '</pre></li>')
 
   // Focus on the input
 
