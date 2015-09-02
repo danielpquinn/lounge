@@ -50,4 +50,4 @@ Example: `/addrequirement -environment Entrance -item Sceptre`
 
 __connectenvironments__  
 Connect two environments. This will allow users to move from place to place.  
-Example: `/connectenvironments -environment Entrance -item Sceptre`
+Example: `/connectenvironments -name1 Entrance -name2 Tomb`
