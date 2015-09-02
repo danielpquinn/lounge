@@ -1,6 +1,6 @@
 # Lounge
 
-Command line style chat application and multi-user dungeon. Built on MongoDB and Socket.io.
+Command line style chat application and MUD. Built on MongoDB and Socket.io.
 
 ![Screenshot](https://rawgit.com/danielpquinn/lounge/master/lounge.png "Lounge")
 
