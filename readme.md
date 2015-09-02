@@ -4,10 +4,11 @@ Command line style chat application and multi-user dungeon. Built on MongoDB and
 
 ![Screenshot](https://rawgit.com/danielpquinn/lounge/master/lounge.png "Lounge")
 
-### Install
+### Install & Build
 
     cd lounge
     npm install
+    gulp babelify
 
 ### Run tests
 
