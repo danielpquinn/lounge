@@ -1,6 +1,6 @@
 # Lounge
 
-Command line style chat application and multi-user dungeon
+Command line style chat application and multi-user dungeon. Built on MongoDB and Socket.io.
 
 ![Screenshot](https://rawgit.com/danielpquinn/lounge/master/lounge.png "Lounge")
 
@@ -28,6 +28,8 @@ Bootstrap an environment with a few example rooms
 Point your browser to localhost:3000. The bootstrap script will have created an admin user with an email address __admin@lounge.com__ and a password __admin__. To log in as the admin user enter the following command into the prompt
 
     /signin -email admin@lounge.com -password admin
+
+New users can sign up using the /signup command and supplying an email address, username and password. Nodemailer is used to send an email verification link to the supplied email address.
 
 ### Admin commands
 
