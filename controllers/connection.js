@@ -16,7 +16,7 @@ var winston = require('winston');
 
 module.exports = function (socket) {
   var io = this;
-  var currentUser, user, message;
+  var currentUser;
 
   // Remove user from logged in users on disconnect
   
@@ -47,10 +47,8 @@ module.exports = function (socket) {
     // Authenticate on every message
 
     UserController.authenticate(data.token)
-      .then(function (doc) {
-        var command, messageText;
-
-        user = doc;
+      .then(function (user) {
+        var command, message, messageText;
 
         // Add user to session
         
@@ -98,27 +96,30 @@ module.exports = function (socket) {
 
         // Save message
 
-        return message.saveAsync();
-      })
-      .then(function () {
-        var text = message.text;
+        return message.saveAsync(function () {
+          var text = message.text;
 
-        var response = {
-          username: user.username,
-          _id: message._id
-        };
+          var response = {
+            username: user.username,
+            _id: message._id
+          };
+        
+          // Log message
 
-        // Expand links
+          winston.log('info', response);
 
-        text = Expander.youtube(text);
-        text = Expander.image(text);
-        text = AutoLinker.link(text);
+          // Expand links
 
-        response.text = text;
+          text = AutoLinker.link(text);
+          text = Expander.youtube(text);
+          text = Expander.image(text);
 
-        // Send newly saved message out to all clients
+          response.text = text;
 
-        io.emit('message', response);
+          // Send newly saved message out to all clients
+
+          io.emit('message', response);
+        });
       })
       .catch(function (err) {
         
