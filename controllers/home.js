@@ -21,6 +21,7 @@ module.exports = function (req, res, next) {
   
   res.locals.title = config.siteName;
   res.locals.protocol = config.protocol;
+  res.locals.host = config.host;
   res.locals.ip = config.ip;
   res.locals.port = config.port;
   res.locals.siteBanner = config.siteBanner;
