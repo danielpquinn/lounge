@@ -110,9 +110,9 @@ module.exports = function (socket) {
 
           // Expand links
 
-          text = AutoLinker.link(text);
           text = Expander.youtube(text);
           text = Expander.image(text);
+          text = AutoLinker.link(text);
 
           response.text = text;
 
