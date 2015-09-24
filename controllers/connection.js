@@ -4,6 +4,7 @@
 // Dependencies
 
 var CommandController = require('./command');
+var Expander = require('../lib/expander');
 var Message = require('../models/message');
 var AutoLinker = require('autolinker');
 var session = require('./session');
@@ -53,13 +54,9 @@ module.exports = function (socket) {
         
         if (user) { currentUser = user; session.addUser(user); }
 
-        // Strip tags from user input
-
-        messageText = striptags(data.text);
-
         // If this is a command, run it
 
-        if (messageText.charAt(0) === '/') {
+        if (data.text.charAt(0) === '/') {
           return CommandController.runCommand(user, data.text)
             .then(function (result) {
         
@@ -78,6 +75,15 @@ module.exports = function (socket) {
               }
             });
         }
+
+        // Strip tags from user input
+
+        messageText = striptags(data.text);
+
+        // Expand links
+
+        messageText = Expander.youtube(messageText);
+        messageText = Expander.image(messageText);
 
         // If no command matched and user is not signed in
         // throw an error
