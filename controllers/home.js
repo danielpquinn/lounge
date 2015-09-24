@@ -6,6 +6,7 @@
 var config = require('../config');
 var AuthToken = require('../models/auth-token');
 var AutoLinker = require('autolinker');
+var Expander = require('../lib/expander');
 var Message = require('../models/message');
 var User = require('../models/user');
 var UserController = require('./user');
@@ -40,9 +41,17 @@ module.exports = function (req, res, next) {
       // Add messages to locals
 
       res.locals.messages = messages.map(function (message) {
+        var text = message.text;
+
+        // Expand links
+
+        text = Expander.youtube(text);
+        text = Expander.image(text);
+        text = AutoLinker.link(text);
+
         return {
           username: message.user ? message.user.username : 'anonymous',
-          text: AutoLinker.link(message.text),
+          text: text,
           _id: message._id
         }
       });
