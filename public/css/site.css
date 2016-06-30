@@ -6,17 +6,44 @@ body * {
 }
 
 body {
+  margin: 0;
   font-size: 14px;
   background-color: black;
   font-family: monospace;
   color: #00ff00;
 }
 
+#app, .app {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/** Chat component */
+
+.chat {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  border-right: 1px solid #00ff00;
+}
+
 .messages {
   margin: 0;
-  padding: 0;
+  padding: 10px;
   width: 100%;
   list-style: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 30px;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .messages .username {
@@ -27,9 +54,16 @@ body {
 
 form {
   width: 100%;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid #00ff00;
+  margin: 0;
 }
 
 form input {
+  height: 30px;
+  padding: 3px 10px;
   font-size: 14px;
   background-color: transparent;
   border: none;
@@ -52,4 +86,15 @@ form input:focus {
 
 a {
   color: #3CBBC6;
+}
+
+/** Activity component */
+
+.activities {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  overflow-y: scroll;
 }

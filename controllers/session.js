@@ -9,7 +9,12 @@ var Promise = require('bluebird');
 
 function Session() {
   this.users = [];
+  this.activities = [];
 };
+
+// Static properties
+
+Session.MAX_ACTIVITIES = 100;
 
 // Add a user to the list
 
@@ -54,6 +59,15 @@ Session.prototype.getUsers = function () {
       text: message
     });
   });
+};
+
+// Add activity to session
+
+Session.prototype.addActivity = function (activity) {
+  this.activities.push(activity);
+  if (this.activities.length > Session.MAX_ACTIVITIES) {
+    this.activities = this.activities.slice(1);
+  }
 };
 
 // Export singleton

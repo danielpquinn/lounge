@@ -1,26 +1,25 @@
 html
   head
     title= title
+    script.
+      window.TOKEN = '#{authToken}';
+      window.IP = '#{ip}';
+      window.PORT = '#{port}';
     link(type='text/css',rel='stylesheet',href='/css/site.css')
     script(type='text/javascript',src='#{protocol}://#{host}:#{port}/socket.io/socket.io.js')
-    script(type='text/javascript',src='/bower_components/jquery/dist/jquery.js')
-    script(type='text/javascript',src='/dist/main.js')
-    script.
-      var TOKEN = '#{authToken}';
-      var IP = '#{ip}';
-      var PORT = '#{port}';
-      var BANNER = "#{siteBanner}";
+    script(type='text/javascript',src='/node_modules/react/dist/react.js')
+    script(type='text/javascript',src='/node_modules/react-dom/dist/react-dom.js')
+    script(type='text/javascript',src='/js/lounge/lib/event.js')
+    script(type='text/javascript',src='/js/lounge/lib/store.js')
+    script(type='text/javascript',src='/js/lounge/stores/activities.js')
+    script(type='text/javascript',src='/js/lounge/stores/messages.js')
+    script(type='text/javascript',src='/js/lounge/components/activities.js')
+    script(type='text/javascript',src='/js/lounge/components/chat.js')
+    script(type='text/javascript',src='/js/lounge/components/messages.js')
+    script(type='text/javascript',src='/js/lounge/components/message.js')
+    script(type='text/javascript',src='/js/lounge/components/command-input.js')
+    script(type='text/javascript',src='/js/lounge/components/app.js')
+    script(type='text/javascript',src='/js/main.js')
   body
 
-    // Messages
-
-    ul.messages
-      - each message in messages
-        li(id=message._id)
-          span.username= message.username || 'anonymous'
-          span.message!= message.text
-
-    // User input
-
-    form
-      input(type="text",name="message")
+    div#app

@@ -1,5 +1,4 @@
-public/bower_components
-public/dist
+public/node_modules
 npm-debug.log
 node_modules
 config.js

@@ -15,4 +15,6 @@ server.listen(config.port);
 app.use(express.static('public'));
 app.set('view engine', 'jade');
 app.get('/', require('./controllers/home'));
+app.get('/api/messages', require('./controllers/messages'));
+app.get('/api/activities', require('./controllers/activities'));
 io.on('connection', require('./controllers/connection'));

@@ -21,6 +21,7 @@ module.exports = function (socket) {
   // Remove user from logged in users on disconnect
   
   socket.on('disconnect', function (data) {
+    var activity;
 
     if (!currentUser) { return; }
 
@@ -28,12 +29,37 @@ module.exports = function (socket) {
 
     session.removeUser(currentUser);
 
-    // Send message to clients
+    // Update activity log
 
-    io.emit('message', {
-      username: 'system',
-      text: '<span class="info">' + currentUser.username + ' has disconnected</span>'
-    });
+    activity = {
+      created: Date.now(),
+      activity: currentUser.username + ' disconnected'
+    };
+    session.addActivity(activity);
+    io.emit('activity', activity);
+  });
+
+  // Client will ping with token after connection
+
+  socket.on('visit', function (token) {
+    UserController.authenticate(token)
+      .then(function (user) {
+        if (user !== undefined) {
+
+          // Add user to session
+          
+          if (user) { currentUser = user; session.addUser(user); }
+
+          // Update activity log
+
+          activity = {
+            created: Date.now(),
+            activity: currentUser.username + ' connected'
+          };
+          session.addActivity(activity);
+          io.emit('activity', activity);
+        }
+      });
   });
 
   // Handle message from client
@@ -49,10 +75,6 @@ module.exports = function (socket) {
     UserController.authenticate(data.token)
       .then(function (user) {
         var command, message, messageText;
-
-        // Add user to session
-        
-        if (user) { currentUser = user; session.addUser(user); }
 
         // If this is a command, run it
 

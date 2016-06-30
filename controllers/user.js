@@ -90,8 +90,6 @@ UserController.signIn = function (email, password) {
     .then(function (doc) {
       var compare = Promise.promisify(bcrypt.compare);
 
-      console.log(doc);
-
       // No user with this email address was found, thow an error
 
       if (!doc) { throw new Error('Invalid email or password'); }
@@ -132,7 +130,7 @@ UserController.signIn = function (email, password) {
 
       return {
         command: 'signin',
-        token: token[0].token,
+        token: token.token,
         text: 'signed in as ' + user.username
       };
     });
