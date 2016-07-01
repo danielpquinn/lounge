@@ -28,7 +28,7 @@ body {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 50%;
+  width: 75%;
   border-right: 1px solid #00ff00;
 }
 
@@ -95,6 +95,15 @@ a {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 50%;
+  width: 25%;
   overflow-y: scroll;
+  padding: 10px;
+  margin: 0;
+  list-style: none;
+}
+
+.activities .created {
+  color: #ff00ff;
+  display: inline-block;
+  margin-right: 10px;
 }

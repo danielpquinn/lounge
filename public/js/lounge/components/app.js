@@ -49,9 +49,10 @@
         localStorage.setItem('token', context.TOKEN);
       }
 
-      // Fetch initial list of messages
+      // Fetch initial list of messages and activities
 
       this.messages.fetchRecent();
+      this.activities.fetchRecent();
 
       // Pull token from localstorage
 
@@ -61,6 +62,7 @@
       this.socket.on('warning', this.onSocketWarning);
       this.socket.on('command', this.onSocketCommand);
       this.socket.on('message', this.onSocketMessage);
+      this.socket.on('activity', this.onSocketActivity);
     },
 
     // Add connection event to activity log
@@ -129,6 +131,12 @@
         username: 'system',
         level: 'info'
       });
+    },
+
+    // Handle a new activity item
+
+    onSocketActivity: function (data) {
+      this.activities.add(data);
     },
 
     // Send a new message to the server

@@ -13,7 +13,10 @@
 
   components.Activities = React.createClass({
     render: function () {
-      return React.createElement('div', { className: 'activities' });
+      var activities = this.props.activities.items.map(function (activity) {
+        return React.createElement(components.Activity, { key: activity.created, created: activity.created, activity: activity.activity });
+      });
+      return React.createElement('ul', { className: 'activities' }, 'Recent activity', activities);
     },
 
     // Update state when activities store is updated
