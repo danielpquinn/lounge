@@ -58,6 +58,11 @@ module.exports = function (socket) {
           };
           session.addActivity(activity);
           io.emit('activity', activity);
+          
+          // Show user a help message when they first log in
+
+          CommandController.runCommand(user, '/help')
+            .then(function (result) { socket.emit('command', result); });
         }
       });
   });
